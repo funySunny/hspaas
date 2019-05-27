@@ -1,0 +1,22 @@
+.admin-main{
+	margin: 0;
+}
+.admin-main .layui-field-title .layui-field-box{
+	padding: 10px 30px;
+}
+.admin-main .layui-field-title .layui-field-box p{
+	padding: 5px 0;
+}
+
+.admin-main-logo{
+	background: #0C0C0C;
+}
+
+/***重置左菜单高度**/
+.layui-layout-admin .layui-side {
+	top: 55px;
+}
+
+.layui-layout-admin .layui-body {
+	top: 50px;
+}

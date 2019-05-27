@@ -1,0 +1,129 @@
+/**
+ * 
+ */
+package com.huashi.web.controller.sms;
+
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import org.apache.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSONObject;
+import com.huashi.common.notice.vo.BaseResponse;
+import com.huashi.common.util.DateUtil;
+import com.huashi.constants.OpenApiCode.CommonApiCode;
+import com.huashi.sms.record.service.ISmsApiFaildRecordService;
+import com.huashi.sms.record.service.ISmsMoMessageService;
+import com.huashi.sms.record.service.ISmsMtSubmitService;
+import com.huashi.web.client.SmsClient;
+import com.huashi.web.controller.BaseController;
+import com.huashi.web.prervice.sms.SmsSendPrervice;
+
+/**
+ * 短信管理 发送记录、错误记录、接收记录
+ * 
+ * @author Administrator
+ */
+@Controller
+@RequestMapping("/sms/send")
+public class SmsSendController extends BaseController {
+
+    @Reference
+    private ISmsMtSubmitService       submitService;
+    @Reference
+    private ISmsMoMessageService      moMassageReceiveService;
+    @Reference
+    private ISmsApiFaildRecordService smsApiFailedRecordService;
+
+    @Autowired
+    private SmsSendPrervice           smsSendPrervice;
+
+    @Autowired
+    private SmsClient                 smsClient;
+
+    /**
+     * 短信发送
+     * 
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public String index(Model model) {
+        return moduleInConsole("/sms/send_sms");
+    }
+
+    /**
+     * TODO 短信发送
+     * 
+     * @param mobile
+     * @param content
+     * @return
+     */
+    @RequestMapping(value = "/submit", method = RequestMethod.POST)
+    public @ResponseBody BaseResponse sendSms(String mobile, String content) {
+        try {
+            return smsClient.sendSms(getCurrentUserId(), mobile, content);
+        } catch (Exception e) {
+            logger.error("Send message failed", e);
+            return new BaseResponse(false, CommonApiCode.COMMON_SERVER_EXCEPTION.getMessage());
+        }
+    }
+
+    /**
+     * 读取文件 解析号码
+     * 
+     * @param filePath
+     */
+    @RequestMapping(value = "/read_file/{file_type}", method = RequestMethod.POST)
+    public @ResponseBody JSONObject readFile(@PathVariable(value = "file_type") String fileType, MultipartFile file) {
+        JSONObject response = new JSONObject();
+        try {
+            Set<String> mobiles = smsSendPrervice.readMobilesFromFile(fileType, file);
+            response.put("mobiles", mobiles);
+            response.put("count", mobiles.size());
+            response.put("result", "0");
+
+        } catch (Exception e) {
+            response.put("result", "1");
+        }
+
+        return response;
+    }
+
+    /**
+     * 短信发送记录首页
+     * 
+     * @return
+     */
+    @RequestMapping(value = "/query", method = RequestMethod.GET)
+    public String query(Model model) {
+        model.addAttribute("startDate", DateUtil.getCurrentDate());
+        model.addAttribute("endDate", DateUtil.getCurrentDate());
+        return moduleInConsole("/sms/send_query");
+    }
+
+    /**
+     * 短信发送记录数据列表
+     * 
+     * @param request
+     * @param currentPage
+     * @param phoneNumber
+     * @param starDate
+     * @param endDate
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/page")
+    @ResponseBody
+    public LayuiPage page(String page, String sid, String mobile, String startDate, String endDate, Model model) {
+        return parseLayuiPage(submitService.findPage(getCurrentUserId(), mobile, startDate, endDate, page, sid));
+    }
+
+}

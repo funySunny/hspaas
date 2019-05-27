@@ -1,0 +1,65 @@
+package com.huashi.mms.config.cache.redis.pubsub;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.connection.Message;
+import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
+
+import com.alibaba.fastjson.JSON;
+import com.huashi.mms.config.cache.redis.constant.MmsRedisConstant;
+import com.huashi.mms.passage.domain.MmsPassageAccess;
+import com.huashi.mms.passage.service.MmsPassageAccessService;
+
+/**
+ * 
+  * 可用通道广播监听
+  * 
+  * @author zhengying
+  * @version V1.0   
+  * @date 2018年6月9日 下午3:04:21
+ */
+public class MmsPassageAccessListener extends MessageListenerAdapter {
+
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+
+	@Override
+	public void onMessage(Message message, byte[] pattern) {
+		try {
+			if (message == null) {
+				return;
+			}
+
+			MmsPassageAccess access = JSON.parseObject(message.toString(), MmsPassageAccess.class);
+			if (access == null) {
+				return;
+			}
+
+			logger.info("订阅可用通道数据[" + message.toString() + "]，将做清除处理");
+
+			// 清空后，采用延期加载方式填充数据，即使用的时候才会去REDIS查询并填充
+			MmsPassageAccessService.GLOBAL_PASSAGE_ACCESS_CONTAINER.remove(getKey(access));
+
+		} catch (Exception e) {
+			logger.warn("可用通道订阅数据失败", e);
+		}
+	}
+
+	private String getKey(MmsPassageAccess access) {
+		return getMainKey(access) + MmsPassageAccessService.MAP_KEY_SEPERATOR + getAssistKey(access);
+	}
+
+	private String getAssistKey(MmsPassageAccess access) {
+		return String.format("%d:%d:%d", access.getRouteType(), access.getCmcp(), access.getProvinceCode());
+	}
+
+	/**
+	 * 获取REDIS主KEY
+	 *
+	 * @param access 可用通道数据
+	 * @return KEY
+	 */
+	private String getMainKey(MmsPassageAccess access) {
+		return String.format("%s:%d:%d", MmsRedisConstant.RED_USER_PASSAGE_ACCESS, access.getUserId(),
+				access.getCallType());
+	}
+}
