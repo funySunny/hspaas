@@ -1,4 +1,8 @@
-# 华时融合平台 (hspaas.com)
+
+<img src="http://hspaas.com/skin/default/images/logo.png" alt="Sentinel Logo" width="50%">
+
+
+# 华时融合平台
 
 ## 业务描述
 
