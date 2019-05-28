@@ -22,7 +22,7 @@
 
 ### 2、pom模块概览
 ```xml
-<!-- projects in all product -->
+<!-- micro service modules display-->
 <modules>
     <module>hsapi</module>
     <module>hsweb</module>
