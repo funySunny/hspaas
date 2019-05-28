@@ -1,5 +1,5 @@
 
-<img src="http://hspaas.com/skin/default/images/logo.png" alt="Sentinel Logo" width="50%">
+<img src="http://hspaas.com/skin/default/images/logo.png" alt="Huashi Logo" width="50%">
 
 
 # 华时融合平台
@@ -22,11 +22,21 @@
 
 ## 技术架构
 ### 1、环境依赖
-![框架环境依赖](./doc/images/framework-env.png)
+![框架环境依赖](./doc/images/framework.png)
 
 ### 2、pom模块概览
+hspaas项目根节点中`pom.xml`，根节点中依赖**spring-boot-starter-parent**，如下：
+
 ```xml
-<!-- micro service modules display-->
+<!-- current version is 2.1.5.RELEASE -->
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>${lastest.verion}</version>
+    <relativePath/>
+</parent>
+
+<!-- hspaas micro service modules display-->
 <modules>
     <module>hsapi</module>
     <module>hsweb</module>
@@ -41,10 +51,11 @@
     <module>hs-monitor</module>
     <module>hsboss</module>
 </modules>
- ```
+```
+ 
 ### 3、模块详细说明
 
-- **hsapi**: SDK,用于**dubbo**接口、本地值域暴露，公用方法封装提供，如基础加密算法、邮箱手机号码等正则校验工具类等； ``   
+- **hsapi **: SDK,用于**dubbo**接口、本地值域暴露，公用方法封装提供，如基础加密算法、邮箱手机号码等正则校验工具类等； ``   
 - **hsweb**: 官网及开发者控制中心，如页面发送短信、彩信等，查看发送账单等功能；
 - **hs-developer**: 开发者接口调用中心，主要对接口报文参数鉴权，流量转发等功能；
 - **hs-listener**: 回执报告转发中心，主要用于接受通道方处理完成后的回执对账数据，来进行后续的状态更新操作；
@@ -62,8 +73,34 @@
 
 ### 4、部署发布
 
-Maven打包后，可直接采用
+基于Maven打包后，得到相应服务的**jar/war**，如 **hs-developer.jar**。
 
-java -jar ***.jar
+- Java 命令运行模式
 
-也可使用Dockerfile 进行docker部署。
+`-D后面参数可以自由追加，JVM参数和GC具体参数按照当前服务器环境配置`
+```bash
+java -jar -XX:+UseParallelOldGC -XX:SurvivorRatio=8
+    -XX:-OmitStackTraceInFastThrow
+    -XX:+PrintGCDetails
+    -XX:+PrintGCDateStamps
+    -XX:+UseGCLogFileRotation
+    -XX:NumberOfGCLogFiles=5
+    -XX:GCLogFileSize=10m
+    -XX:+HeapDumpOnOutOfMemoryError
+    -XX:HeapDumpPath=/var/local/logs
+    -Djava.io.tmpdir=/var/local/logs/tmp
+    -Dspring.profiles.active=product
+    -Dserver.port=8080
+     hs-devoloper.jar
+
+```
+- Docker 运行模式（Dockerfile）
+```bash
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+ARG JAR_FILE
+COPY hs-developer.jar app.jar
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+```
+
+- K8s扩展(待完善)
