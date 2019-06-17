@@ -14,7 +14,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jfinal.version>2.0</jfinal.version>
+        <jfinal.version>2.2</jfinal.version>
+        <jfinal-ext.version>3.1.4</jfinal-ext.version>
         <druid.version>1.1.16</druid.version>
     </properties>
 
@@ -34,7 +35,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- 基础MVC -->
         <dependency>
             <groupId>com.jfinal</groupId>
             <artifactId>jfinal</artifactId>
@@ -42,8 +42,8 @@
         </dependency>
         <dependency>
             <groupId>com.jfinal</groupId>
-            <artifactId>jfinal-ext</artifactId>
-            <version>3.1.4</version>
+            <artifactId>jfinal-ext2</artifactId>
+            <version>2.0.8</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>

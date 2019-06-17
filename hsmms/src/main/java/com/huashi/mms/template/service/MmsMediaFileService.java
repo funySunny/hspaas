@@ -50,7 +50,6 @@ public class MmsMediaFileService {
     /**
      * TODO 写入OSS文件
      * 
-     * @param originName 原文件名称
      * @param filename 新文件名称
      * @param data 二进制数据
      * @return
@@ -121,9 +120,7 @@ public class MmsMediaFileService {
 
     /**
      * 获取最终的URL
-     * 
-     * @param path
-     * @return
+     *
      */
     public String getWebUrl(String name) {
         if (StringUtils.isEmpty(name)) {

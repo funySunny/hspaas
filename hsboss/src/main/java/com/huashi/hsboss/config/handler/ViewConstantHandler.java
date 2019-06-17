@@ -33,8 +33,8 @@ public class ViewConstantHandler extends Handler{
 		for(Map.Entry<String, Object> map : constantMap.entrySet()){
 			request.setAttribute(map.getKey(), map.getValue());
 		}
-		nextHandler.handle(target, request, response, isHandled);
-//		next.handle(target, request, response, isHandled);
+
+		next.handle(target, request, response, isHandled);
 	}
 
 

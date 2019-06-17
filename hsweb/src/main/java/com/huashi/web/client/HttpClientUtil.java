@@ -46,7 +46,7 @@ public class HttpClientUtil {
     /**
      * 从连接池中获取连接时间
      */
-    private static final int                                                CONNECTION_REQUEST_TIMEOUT = 1 * 1000;
+    private static final int                                                CONNECTION_REQUEST_TIMEOUT = 1000;
     /**
      * 建立连接时间
      */
@@ -101,7 +101,7 @@ public class HttpClientUtil {
     /**
      * 推送重试上限次数
      */
-    public static final int                                                 PUSH_RETRY_TIMES           = 3;
+    private static final int                                                 PUSH_RETRY_TIMES           = 3;
 
     /**
      * 当前线程起始时间
@@ -109,22 +109,15 @@ public class HttpClientUtil {
     private static AtomicLong                                               currentStartTime           = new AtomicLong();
 
     /**
-     * TODO URL是否为HTTPS
+     * URL是否为HTTPS
      * 
-     * @param url
-     * @return
+     * @param url 连接地址
+     * @return true/false
      */
     private static boolean isHttpsUrl(String url) {
         return StringUtils.isNotBlank(url) && url.trim().startsWith(HTTPS_PROTOCOL_PREFIX);
     }
 
-    /**
-     * 获取HttpClient对象
-     *
-     * @return
-     * @author SHANHY
-     * @create 2015年12月18日
-     */
     private static CloseableHttpClient getHttpClient(String url, Integer maxTotal, Integer maxPerRoute) {
         String hostname = url.split("/")[2];
 
@@ -266,7 +259,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * TODO POST请求（默认连接数）
+     * POST请求（默认连接数）
      *
      * @param url
      * @param params
@@ -277,7 +270,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * TODO POST请求（默认连接数）
+     * POST请求（默认连接数）
      *
      * @param url
      * @param params
@@ -289,7 +282,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * TODO POST请求（默认连接数）
+     * POST请求（默认连接数）
      *
      * @param url
      * @param params
@@ -300,7 +293,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * TODO POST请求（默认连接数）
+     * POST请求（默认连接数）
      *
      * @param url
      * @param params
@@ -311,7 +304,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * TODO 设置HTTP参数信息
+     * 设置HTTP参数信息
      *
      * @param httpPost
      * @param params
@@ -321,7 +314,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * TODO 设置HTTP参数信息（包含编码）
+     * 设置HTTP参数信息（包含编码）
      *
      * @param httpPost
      * @param params
@@ -346,7 +339,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * TODO 设置HTTP头信息
+     * 设置HTTP头信息
      *
      * @param httpPost
      * @param headers
@@ -356,7 +349,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * TODO 获取HttpPost
+     * 获取HttpPost
      *
      * @param url
      * @return
@@ -366,7 +359,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * TODO 获取HttpPost
+     * 获取HttpPost
      *
      * @param url
      * @param connectionTimeout
@@ -377,7 +370,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * TODO 获取HttpPost
+     * 获取HttpPost
      *
      * @param url
      * @param conectionRequestTimeout 连接池获取连接超时时间
@@ -395,7 +388,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * TODO 设置HTTP头信息（包含编码）
+     * 设置HTTP头信息（包含编码）
      *
      * @param httpPost
      * @param headers
@@ -482,7 +475,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * TODO 调用连接池大小
+     * 调用连接池大小
      *
      * @param url
      * @param params
@@ -494,7 +487,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * TODO 调用连接池大小
+     * 调用连接池大小
      *
      * @param url
      * @param headers
@@ -507,7 +500,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * TODO 调用POST
+     * 调用POST
      *
      * @param url
      * @param params
@@ -584,7 +577,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * TODO 发送报文信息
+     * 发送报文信息
      *
      * @param url
      * @param content
@@ -596,7 +589,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * TODO HTTP 发送
+     * HTTP 发送
      *
      * @param url 网络URL
      * @param content
@@ -668,7 +661,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * TODO 调用用户回调地址（递归重试，目前专用推送客户数据报告 上行/下行）
+     * 调用用户回调地址（递归重试，目前专用推送客户数据报告 上行/下行）
      * 
      * @param url 推送回调地址（HTTP）
      * @param body 推送报文内容
@@ -705,7 +698,7 @@ public class HttpClientUtil {
     }
 
     /**
-     * TODO 重试回执信息
+     * 重试回执信息
      * 
      * @author zhengying
      * @version V1.0

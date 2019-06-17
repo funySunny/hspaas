@@ -1,20 +1,19 @@
 package com.huashi.web.controller;
 
-import javax.imageio.ImageIO;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import org.apache.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSONObject;
 import com.huashi.common.notice.service.IMessageSendService;
 import com.huashi.common.util.RandomUtil;
 import com.huashi.common.util.VerifyCodeUtil;
 import com.huashi.constants.CommonContext.CMCP;
 import com.huashi.web.filter.PermissionClear;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.dubbo.config.annotation.Reference;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.imageio.ImageIO;
 
 @Controller
 @PermissionClear
@@ -26,9 +25,7 @@ public class VerifyCodeController extends BaseController {
 
 	/**
 	 * 
-	   * TODO 获取验证码
-	   * @param response
-	   * @param httpSession
+	   *  获取验证码
 	 */
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public @ResponseBody void getVerifyCodeImage() {
@@ -48,7 +45,6 @@ public class VerifyCodeController extends BaseController {
 	/**
 	 * 
 	   * TODO 对比SESSION验证码
-	   * @param httpSession
 	   * @param code
 	   * 		页面传递值
 	   * @return
@@ -57,14 +53,10 @@ public class VerifyCodeController extends BaseController {
 	public @ResponseBody boolean validate(String code) {
 		Object o = session.getAttribute(DEFAULT_CAPTCHA_MD5_CODE_KEY);
 		if (o == null) {
-            {
                 return false;
-            }
         }
 		if(StringUtils.isEmpty(code)) {
-            {
                 return false;
-            }
         }
 		return o.toString().equalsIgnoreCase(code.trim());
 	}
@@ -72,28 +64,21 @@ public class VerifyCodeController extends BaseController {
 	/**
 	 * 
 	   * TODO 发送短信验证码
-	   * @param httpSession
 	   * @param mobile
 	   * @return
 	 */
 	@RequestMapping(value = "/mcode", method = RequestMethod.POST)
 	public @ResponseBody int getMessageCode(String mobile, String code) {
 		if(!CMCP.isAvaiableMobile(mobile)) {
-            {
                 return MobileCodeValidate.MOBILE_INVALID.getValue();
-            }
         }
 		
 		if(!validate(code)) {
-            {
                 return MobileCodeValidate.IMAGE_CODE_ERROR.getValue();
-            }
         }
 		
 		if(!isAllowedSms()) {
-            {
                 return MobileCodeValidate.SMS_FREQUENCY_LIMIT.getValue();
-            }
         }
 		
 		// 调用发送短信记录前校验 图形验证码是否正确
@@ -110,7 +95,6 @@ public class VerifyCodeController extends BaseController {
 	/**
 	 * 
 	   * TODO 验证短信验证码是否正确
-	   * @param httpSession
 	   * @param smsCode
 	   * @return
 	 */
@@ -147,7 +131,7 @@ public class VerifyCodeController extends BaseController {
 		private int value;
 		private String title;
 
-		private MobileCodeValidate(int value, String title) {
+		MobileCodeValidate(int value, String title) {
 			this.value = value;
 			this.title = title;
 		}

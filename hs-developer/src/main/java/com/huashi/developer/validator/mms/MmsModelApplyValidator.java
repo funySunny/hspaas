@@ -27,12 +27,12 @@ public class MmsModelApplyValidator extends Validator {
     private IMmsTemplateBodyService mmsTemplateBodyService;
 
     /**
-     * TODO 用户参数完整性校验
+     * 用户参数完整性校验
      * 
-     * @param paramMap
-     * @param ip
-     * @return
-     * @throws ValidateException
+     * @param paramMap 参数
+     * @param ip IP
+     * @return 转义后的末班请求
+     * @throws ValidateException 校验业务异常
      */
     public MmsModelApplyRequest validate(Map<String, String[]> paramMap, String ip) throws ValidateException {
         MmsModelApplyRequest mmsModelApplyRequest = new MmsModelApplyRequest();
@@ -51,9 +51,9 @@ public class MmsModelApplyValidator extends Validator {
     }
 
     /**
-     * TODO 检验模板内容格式是否无误
+     * 检验模板内容格式是否无误
      * 
-     * @param mmsCustomContentSendRequest
+     * @param mmsModelApplyRequest 请求参数
      */
     private void checkModelBodyRule(MmsModelApplyRequest mmsModelApplyRequest) throws ValidateException {
         try {

@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
@@ -23,11 +24,7 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
@@ -38,8 +35,8 @@ import com.huashi.web.filter.XssFilter;
 
 import freemarker.template.utility.XmlEscape;
 
-//@Configuration
-//@EnableWebMvc
+@Configuration
+@EnableWebMvc
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 
 	@Autowired
