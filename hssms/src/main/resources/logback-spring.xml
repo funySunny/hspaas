@@ -7,7 +7,7 @@
 
 	<contextName>${appName}</contextName>
 
-	!-- 加载颜色解析器 -->
+	<!-- 加载颜色解析器 -->
 	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
 
 	<!-- 控制台输出日志 -->
